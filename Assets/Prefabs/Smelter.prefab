@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &4559622405803055044
 RectTransform:
   m_ObjectHideFlags: 0
@@ -854,6 +854,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2498592502627358541}
+  - component: {fileID: 1463654942226875471}
   m_Layer: 0
   m_Name: Smelter
   m_TagString: Untagged
@@ -878,6 +879,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1463654942226875471
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7682729373591081908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f504fe69809d604294a6442487896cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cmCamera: {fileID: 5265363889059563875}
+  hud: {fileID: 181441184383465269}
 --- !u!1 &8754119272869870365
 GameObject:
   m_ObjectHideFlags: 0
@@ -889,7 +904,7 @@ GameObject:
   - component: {fileID: 5577534790799199049}
   - component: {fileID: 5265363889059563875}
   m_Layer: 0
-  m_Name: Camera
+  m_Name: CMCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -926,7 +941,7 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 10
+  m_Priority: 0
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
