@@ -37,12 +37,12 @@ public class ItemPickup : MonoBehaviour, IPickupable {
 
     void Start() {
         if(!EditorApplication.isPlaying) {
-            
             return;
         }
 
         if(itemResource != null) {
             ItemResource = Instantiate(itemResource);
+            ItemResource.amount = amount;
         }
 
     }
