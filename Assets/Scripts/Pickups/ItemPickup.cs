@@ -67,7 +67,7 @@ public class ItemPickup : MonoBehaviour, IPickupable {
             }
         }
 
-        if(ItemResource != null && prefabInstance == null && prefabPosition != null) {
+        if(ItemResource != null && prefabInstance == null && prefabPosition != null && ItemResource.prefab != null) {
             prefabInstance = Instantiate(ItemResource.prefab);
             prefabInstance.transform.parent = prefabPosition.transform;
             prefabInstance.transform.position = prefabPosition.transform.position;
