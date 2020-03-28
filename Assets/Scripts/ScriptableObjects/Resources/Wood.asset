@@ -15,3 +15,4 @@ MonoBehaviour:
   title: Wood
   description: A wooden log
   amount: 1
+  prefab: {fileID: 6057927958417812194, guid: 64918e60c1d57774180f2912c83755b2, type: 3}

@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Water
   m_EditorClassIdentifier: 
   title: Water
+  color: {r: 0.15508187, g: 0.4803879, b: 0.8018868, a: 0}
   flamable: 0

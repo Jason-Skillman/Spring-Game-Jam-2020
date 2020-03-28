@@ -10,5 +10,6 @@ public class Resource : ScriptableObject {
 
     [Range(1, 99)]
     public int amount = 1;
+    public GameObject prefab;
 
 }

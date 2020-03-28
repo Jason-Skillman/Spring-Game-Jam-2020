@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: Oil
   m_EditorClassIdentifier: 
   title: Oil
+  color: {r: 0.0754717, g: 0.0754717, b: 0.0754717, a: 0}
   flamable: 1
