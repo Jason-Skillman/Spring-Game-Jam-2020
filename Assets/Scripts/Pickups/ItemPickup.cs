@@ -27,7 +27,7 @@ public class ItemPickup : MonoBehaviour, IPickupable {
 
     public GameObject prefabPosition;
 
-    //[HideInInspector]
+    [HideInInspector]
     [SerializeField]
     public GameObject prefabInstance;
 
@@ -36,18 +36,23 @@ public class ItemPickup : MonoBehaviour, IPickupable {
 
 
     void Start() {
+        //Run in editor
         if(!EditorApplication.isPlaying) {
             return;
         }
 
-        if(itemResource != null) {
+        if(itemResource != null && prefabInstance == null) {
             ItemResource = Instantiate(itemResource);
             ItemResource.amount = amount;
-        }
 
+            prefabInstance = Instantiate(ItemResource.prefab);
+            prefabInstance.transform.parent = prefabPosition.transform;
+            prefabInstance.transform.position = prefabPosition.transform.position;
+        }
     }
 
     void Update() {
+        //Run in editor
         if(!EditorApplication.isPlaying) {
             OnEditor();
             return;
