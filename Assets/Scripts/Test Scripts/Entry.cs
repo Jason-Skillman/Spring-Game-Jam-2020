@@ -16,8 +16,11 @@ public class Entry : MonoBehaviour
     {
         if (col.gameObject.tag == "Iron Ore")
         {
-            furnace.GetComponent<Furnace>().ironOreAmount++;
-            Destroy(col.gameObject);
+            if (furnace.GetComponent<Furnace>().turnedOn)
+            {
+                furnace.GetComponent<Furnace>().ironOreAmount++;
+                Destroy(col.gameObject);
+            }
         }
     }
 
