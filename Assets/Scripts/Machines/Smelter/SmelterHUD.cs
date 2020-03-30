@@ -11,6 +11,8 @@ public class SmelterHUD : MonoBehaviour {
 
     public Image imagePower;
 
+    public ItemSlot itemSlotFuel, itemSlotInput;
+
     private Canvas canvas;
     private Animator animator;
 
@@ -34,7 +36,8 @@ public class SmelterHUD : MonoBehaviour {
 
     private void Start() {
         smelter.OnInteractEvent += Smelter_OnInteractEvent;
-        smelter.OnTogglePower += Smelter_OnTogglePower; ;
+        smelter.OnTogglePower += Smelter_OnTogglePower;
+        smelter.OnItemSlotFuel += Smelter_OnItemSlotFuel; ;
     }
 
     private void Update() {
@@ -64,6 +67,10 @@ public class SmelterHUD : MonoBehaviour {
             c.a = 0.4f;
             imagePower.color = c;
         }
+    }
+
+    private void Smelter_OnItemSlotFuel() {
+        itemSlotFuel.Calculate(smelter.fuel);
     }
 
     /// <summary>

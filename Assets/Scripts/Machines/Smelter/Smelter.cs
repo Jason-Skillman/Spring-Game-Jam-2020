@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Smelter : MonoBehaviour, IInteractable {
 
-    private Resource wood, coal;
+    public Resource fuel, input;
 
     private bool isOn;
     public bool IsOn {
@@ -18,11 +18,14 @@ public class Smelter : MonoBehaviour, IInteractable {
     }
 
     public delegate void Event();
-    public event Event OnInteractEvent;
+    public event Event OnInteractEvent, OnItemSlotFuel, OnItemSlotInput;
 
     public delegate void ToggleEvent(bool value);
     public event ToggleEvent OnTogglePower;
 
+    /*public delegate void ItemSlotEvent(Resource resource);
+    public event ItemSlotEvent ;*/
+    
 
     void Awake() {
         
@@ -46,8 +49,25 @@ public class Smelter : MonoBehaviour, IInteractable {
         IsOn = !IsOn;
     }
 
+    public void ItemSlotFuelClick() {
+        Resource resource = InventoryManager.Instance.pickup;
+
+        if(resource == null) return;
+        if(!resource.title.Equals("Coal")) return;
+
+        AddCoal(resource);
+    }
+
     public void AddCoal(Resource coal) {
-        
+        //If fuel is empty
+        if(fuel == null) {
+            fuel = Instantiate(coal);
+        } else {
+            fuel.amount += coal.amount;
+            if(fuel.amount > fuel.maxAmount) fuel.amount = fuel.maxAmount;
+        }
+
+        OnItemSlotFuel();
     }
 
 }

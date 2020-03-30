@@ -9,6 +9,8 @@ public class Resource : ScriptableObject {
 
     public string description;
 
+    public Sprite sprite;
+
     [Range(1, 99)]
     public int amount = 1;
 
