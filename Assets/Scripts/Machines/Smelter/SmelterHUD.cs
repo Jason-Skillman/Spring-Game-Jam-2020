@@ -1,10 +1,16 @@
-﻿using System.Collections;
+﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HUDController : MonoBehaviour {
+public class SmelterHUD : MonoBehaviour {
 
+    public Smelter smelter;
+    public CinemachineVirtualCamera cmCamera;
+
+    private Canvas canvas;
     private Animator animator;
+    private bool interactState;
 
     public bool IsOpen {
         get; private set;
@@ -15,14 +21,32 @@ public class HUDController : MonoBehaviour {
     }
 
 
-    void Awake() {
+    private void Awake() {
+        canvas = GetComponent<Canvas>();
         animator = GetComponent<Animator>();
+    }
+
+    private void Start() {
+        smelter.OnInteractEvent += Smelter_OnInteractEvent;
+    }
+
+    private void Smelter_OnInteractEvent() {
+        interactState = !interactState;
+        if(IsAnimating) return;
+
+        if(interactState) {
+            ShowHUD();
+            cmCamera.Priority = 100;
+        } else {
+            HideHUD();
+            cmCamera.Priority = 0;
+        }
     }
 
     public void ShowHUD() {
         IsOpen = true;
         IsAnimating = true;
-        gameObject.SetActive(true);
+        canvas.enabled = true;
         animator.SetTrigger("FadeIn");
     }
 
@@ -39,7 +63,7 @@ public class HUDController : MonoBehaviour {
         IsAnimating = false;
 
         if(!IsOpen)
-            gameObject.SetActive(false);
+            canvas.enabled = false;
     }
 
 }

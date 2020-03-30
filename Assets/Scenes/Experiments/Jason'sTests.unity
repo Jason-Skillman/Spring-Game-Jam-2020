@@ -887,31 +887,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1701608482409740343, guid: 2fc58bf0d37490d43bb38410eb93c1f5,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1701608482409740343, guid: 2fc58bf0d37490d43bb38410eb93c1f5,
-        type: 3}
-      propertyPath: m_textInfo.spaceCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1701608482409740343, guid: 2fc58bf0d37490d43bb38410eb93c1f5,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1701608482409740343, guid: 2fc58bf0d37490d43bb38410eb93c1f5,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1701608482409740343, guid: 2fc58bf0d37490d43bb38410eb93c1f5,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2498592502627358541, guid: 2fc58bf0d37490d43bb38410eb93c1f5,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -965,26 +940,6 @@ PrefabInstance:
     - target: {fileID: 2498592502627358541, guid: 2fc58bf0d37490d43bb38410eb93c1f5,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7251685424475929476, guid: 2fc58bf0d37490d43bb38410eb93c1f5,
-        type: 3}
-      propertyPath: m_textInfo.characterCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7251685424475929476, guid: 2fc58bf0d37490d43bb38410eb93c1f5,
-        type: 3}
-      propertyPath: m_textInfo.wordCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7251685424475929476, guid: 2fc58bf0d37490d43bb38410eb93c1f5,
-        type: 3}
-      propertyPath: m_textInfo.lineCount
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7251685424475929476, guid: 2fc58bf0d37490d43bb38410eb93c1f5,
-        type: 3}
-      propertyPath: m_textInfo.pageCount
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7682729373591081908, guid: 2fc58bf0d37490d43bb38410eb93c1f5,
