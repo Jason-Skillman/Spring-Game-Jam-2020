@@ -28,22 +28,17 @@ public class SmelterHUD : MonoBehaviour {
     private void Awake() {
         canvas = GetComponent<Canvas>();
         animator = GetComponent<Animator>();
+
+        canvas.worldCamera = Camera.main;
     }
 
     private void Start() {
         smelter.OnInteractEvent += Smelter_OnInteractEvent;
+        smelter.OnTogglePower += Smelter_OnTogglePower; ;
     }
 
     private void Update() {
-        if(smelter.IsOn) {
-            Color c = imagePower.color;
-            c.a = 1.0f;
-            imagePower.color = c;
-        } else {
-            Color c = imagePower.color;
-            c.a = 0.4f;
-            imagePower.color = c;
-        }
+        
     }
 
     private void Smelter_OnInteractEvent() {
@@ -56,6 +51,18 @@ public class SmelterHUD : MonoBehaviour {
         } else {
             HideHUD();
             cmCamera.Priority = 0;
+        }
+    }
+
+    private void Smelter_OnTogglePower(bool value) {
+        if(value) {
+            Color c = imagePower.color;
+            c.a = 1.0f;
+            imagePower.color = c;
+        } else {
+            Color c = imagePower.color;
+            c.a = 0.4f;
+            imagePower.color = c;
         }
     }
 

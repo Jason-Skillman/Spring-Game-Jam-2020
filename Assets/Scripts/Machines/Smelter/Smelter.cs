@@ -6,12 +6,22 @@ public class Smelter : MonoBehaviour, IInteractable {
 
     private Resource wood, coal;
 
+    private bool isOn;
     public bool IsOn {
-        get; set;
+        get {
+            return isOn;
+        }
+        set {
+            isOn = value;
+            OnTogglePower(isOn);
+        }
     }
 
     public delegate void Event();
     public event Event OnInteractEvent;
+
+    public delegate void ToggleEvent(bool value);
+    public event ToggleEvent OnTogglePower;
 
 
     void Awake() {
@@ -30,6 +40,10 @@ public class Smelter : MonoBehaviour, IInteractable {
     public void OnInteract() {
         if(OnInteractEvent != null)
             OnInteractEvent();
+    }
+
+    public void TogglePower() {
+        IsOn = !IsOn;
     }
 
     public void AddCoal(Resource coal) {
