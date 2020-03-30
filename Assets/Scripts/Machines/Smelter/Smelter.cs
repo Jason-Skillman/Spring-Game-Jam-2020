@@ -7,6 +7,8 @@ public class Smelter : MonoBehaviour, IInteractable {
     private Resource wood, coal;
 
     private bool isOn;
+
+
     public bool IsOn {
         get {
             return isOn;

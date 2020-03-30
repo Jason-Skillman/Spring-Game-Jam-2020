@@ -15,6 +15,9 @@ public class Resource : ScriptableObject {
     [Range(1, 99)]
     public int maxAmount = 99;
 
+    [Range(0, 1f)]
+    public float weight = 1;
+
     public GameObject prefab;
 
 }
