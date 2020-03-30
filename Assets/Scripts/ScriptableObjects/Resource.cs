@@ -6,10 +6,15 @@ using UnityEngine;
 public class Resource : ScriptableObject {
 
     public string title;
+
     public string description;
 
     [Range(1, 99)]
     public int amount = 1;
+
+    [Range(1, 99)]
+    public int maxAmount = 99;
+
     public GameObject prefab;
 
 }
