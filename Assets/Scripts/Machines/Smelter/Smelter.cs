@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Smelter : MonoBehaviour, IInteractable {
+public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
 
+    public InputTrigger inputTrigger;
+
+    [Header("Debug")]
     public Resource fuel, input;
 
     private bool isOn;
@@ -18,44 +21,72 @@ public class Smelter : MonoBehaviour, IInteractable {
     }
 
     public delegate void Event();
-    public event Event OnInteractEvent, OnItemSlotFuel, OnItemSlotInput;
+    public event Event OnInteractEvent, OnItemSlotFuel, OnItemSlotInput, OnInput;
 
     public delegate void ToggleEvent(bool value);
     public event ToggleEvent OnTogglePower;
-
-    /*public delegate void ItemSlotEvent(Resource resource);
-    public event ItemSlotEvent ;*/
     
 
-    void Awake() {
-        
+    void Start() {
+        inputTrigger.MachineInput = this;
     }
 
     void Update() {
-        if(Input.GetKeyDown(KeyCode.Alpha1)) {
-            IsOn = true;
-        } else if(Input.GetKeyDown(KeyCode.Alpha2)) {
-            IsOn = false;
-        }
+        
     }
 
     [ContextMenu("Interact")]
     public void OnInteract() {
-        if(OnInteractEvent != null)
-            OnInteractEvent();
+        OnInteractEvent?.Invoke();
+    }
+
+    public void OnMachineInput(ITransportable transportable) {
+        Resource resource = transportable.OnPeek();
+
+        //Is this resource not wood?
+        if(!resource.title.Equals("Wood")) {
+            transportable.OnRejected();
+            return;
+        }
+
+        //Callback for picking up the transport
+        transportable.OnPickup();
+
+        if(input == null) {
+            input = Instantiate(resource);
+            input.amount = 0;
+        }
+
+        input.Add(ref resource);
+
+        OnInput();
     }
 
     public void TogglePower() {
         IsOn = !IsOn;
     }
 
-    public void ItemSlotFuelClick() {
+    /// <summary>
+    /// Called by the item slot button when it is clicked
+    /// </summary>
+    public void OnClick_ItemSlotFuel() {
         Resource resource = InventoryManager.Instance.pickup;
 
-        if(resource == null) return;
+        if(resource == null) {
+            print("Nothing picked up");
+            //Todo: pickup fuel here
+            return;
+        }
         if(!resource.title.Equals("Coal")) return;
 
         AddCoal(resource);
+    }
+
+    /// <summary>
+    /// Called by the item slot button when it is clicked
+    /// </summary>
+    public void OnClick_ItemSlotInput() {
+        
     }
 
     public void AddCoal(Resource coal) {
