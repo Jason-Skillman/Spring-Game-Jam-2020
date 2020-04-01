@@ -43,19 +43,24 @@ public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
     public void OnMachineInput(ITransportable transportable) {
         Resource resource = transportable.OnPeek();
 
+        if(input == null) {
+            input = Instantiate(resource);
+            input.amount = 0;
+        }
+
         //Is this resource not wood?
         if(!resource.title.Equals("Wood")) {
+            transportable.OnRejected();
+            return;
+        }
+        //Is the input amount full
+        if(input.IsFull) {
             transportable.OnRejected();
             return;
         }
 
         //Callback for picking up the transport
         transportable.OnPickup();
-
-        if(input == null) {
-            input = Instantiate(resource);
-            input.amount = 0;
-        }
 
         input.Add(ref resource);
 

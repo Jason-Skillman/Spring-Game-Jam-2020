@@ -19,6 +19,18 @@ public class Resource : ScriptableObject {
 
     public GameObject prefab;
 
+    public bool IsFull {
+        get {
+            return amount >= maxAmount;
+        }
+    }
+
+    public bool IsEmpty {
+        get {
+            return amount <= 0;
+        }
+    }
+
 
     /// <summary>
     /// Adds inputed resource into this resource if possible
