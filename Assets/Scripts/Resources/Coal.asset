@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Coal
   description: Great fuel source
+  sprite: {fileID: -8719389754761235479, guid: 08f92512864afe24889edd2b65f06a58, type: 3}
   amount: 1
   maxAmount: 30
   prefab: {fileID: 481473538287853832, guid: 997e2cfd810cbee43972bec6ca398657, type: 3}

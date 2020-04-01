@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Wood
   description: A wooden log
+  sprite: {fileID: 2690124355741877597, guid: 08f92512864afe24889edd2b65f06a58, type: 3}
   amount: 1
+  maxAmount: 99
   prefab: {fileID: 6057927958417812194, guid: 64918e60c1d57774180f2912c83755b2, type: 3}

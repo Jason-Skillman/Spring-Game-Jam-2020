@@ -9,6 +9,8 @@ public class Resource : ScriptableObject {
 
     public string description;
 
+    public Sprite sprite;
+
     [Range(1, 99)]
     public int amount = 1;
 
@@ -19,5 +21,49 @@ public class Resource : ScriptableObject {
     public float weight = 1;
 
     public GameObject prefab;
+
+    public bool IsFull {
+        get {
+            return amount >= maxAmount;
+        }
+    }
+
+    public bool IsEmpty {
+        get {
+            return amount <= 0;
+        }
+    }
+
+
+    /// <summary>
+    /// Adds inputed resource into this resource if possible
+    /// </summary>
+    /// <param name="resourceToAdd"></param>
+    public void Add(ref Resource resourceToAdd) {
+        //Is the resource null?
+        if(resourceToAdd == null) return;
+        //Is the resource empty
+        if(resourceToAdd.amount <= 0) return;
+
+        //Add the amount together
+        int newAmount = amount + resourceToAdd.amount;
+
+        //Is the amount more then the maximum amount
+        if(newAmount > maxAmount) {
+            //The amount that was taken from the input resource to fill this resource
+            int amountTaken = maxAmount - amount;
+
+            //Set the input resource to the new amount
+            resourceToAdd.amount -= amountTaken;
+
+            //Cap this resource at max
+            amount = maxAmount;
+
+            return;
+        }
+
+        amount = newAmount;
+        resourceToAdd.amount = 0;
+    }
 
 }
