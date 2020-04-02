@@ -4,21 +4,29 @@ using UnityEngine;
 
 public class Transport : MonoBehaviour, ITransportable {
 
-    public Resource resource;
-    public int amount = 1;
-    
+    public GameObject prefabPosition;
 
-    void Awake() {
-        resource = Instantiate(resource);
-        resource.amount = amount;
+    private GameObject prefabInstance;
+
+    public Resource Resource {
+        get; set;
     }
 
-    void Update() {
 
+    void Start() {
+        if(Resource == null) return;
+
+        prefabInstance = Instantiate(Resource.prefab);
+
+        Vector3 originalScale = prefabInstance.transform.localScale;
+
+        prefabInstance.transform.parent = prefabPosition.transform;
+        prefabInstance.transform.localPosition = Vector3.zero;
+        prefabInstance.transform.localScale = originalScale;
     }
 
     public Resource OnPeek() {
-        return resource;
+        return Resource;
     }
 
     public void OnPickup() {
@@ -26,7 +34,7 @@ public class Transport : MonoBehaviour, ITransportable {
     }
 
     public void OnRejected() {
-        //print("Cant pick this up");
+        //print("Transport was rejected from pickup");
     }
 
 }
