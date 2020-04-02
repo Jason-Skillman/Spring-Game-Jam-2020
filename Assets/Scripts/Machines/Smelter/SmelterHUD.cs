@@ -10,13 +10,12 @@ public class SmelterHUD : MonoBehaviour {
     public CinemachineVirtualCamera cmCamera;
 
     public Image imagePower;
-
     public ItemSlot itemSlotFuel, itemSlotInput;
 
     private Canvas canvas;
     private Animator animator;
 
-    private bool interactState;
+    private bool stateOpen;
 
     public bool IsOpen {
         get; private set;
@@ -47,15 +46,14 @@ public class SmelterHUD : MonoBehaviour {
         smelter.OnInput += Smelter_OnInput;
     }
 
-    private void Update() {
-        
-    }
-
     private void Smelter_OnInteractEvent() {
-        interactState = !interactState;
+        //Is the animator already animating?
         if(IsAnimating) return;
 
-        if(interactState) {
+        //Toggle the state
+        stateOpen = !stateOpen;
+
+        if(stateOpen) {
             ShowHUD();
             cmCamera.Priority = 100;
         } else {

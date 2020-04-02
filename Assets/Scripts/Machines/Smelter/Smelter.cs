@@ -37,7 +37,6 @@ public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
         
     }
 
-    [ContextMenu("Interact")]
     public void OnInteract() {
         OnInteractEvent?.Invoke();
     }
