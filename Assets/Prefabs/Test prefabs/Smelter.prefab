@@ -1350,9 +1350,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3628479e7517ece4d9c0277b2274a74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  productInput: {fileID: 0}
-  inputAmount: 1
-  productOutput: {fileID: 0}
+  productInput: {fileID: 11400000, guid: 23af9a4fe0d2379408da17762a2e4081, type: 2}
+  inputAmount: 2
+  productOutput: {fileID: 11400000, guid: ee74067e2d3f4534bbe85a7ffc734b99, type: 2}
   outputAmount: 1
   fuelMax: 60
   inputTrigger: {fileID: 5940488139247733128}

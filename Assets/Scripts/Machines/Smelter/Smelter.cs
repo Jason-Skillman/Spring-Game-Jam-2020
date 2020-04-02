@@ -68,7 +68,7 @@ public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
 
     private void Awake() {
         //Debug
-        Fuel = 6;
+        //Fuel = 6;
     }
 
     private void Start() {
@@ -155,8 +155,8 @@ public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
 
                 //Use the next block of fuel
                 ResourceFuel.amount--;
-                //Fuel = fuelMax;
-                Fuel = 6;
+                Fuel = fuelMax;
+                //Fuel = 6;
                 continue;
             }
 
