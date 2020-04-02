@@ -30,6 +30,19 @@ Transform:
   m_Father: {fileID: 9183719461193467073}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &450497590364524164
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6533405784632887422}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.030085476, y: 0.019999994, z: 0.019999994}
+  m_Center: {x: -0.00021152197, y: -0.000000002328306, z: -0.0037896198}
 --- !u!1 &8082281698326401317
 GameObject:
   m_ObjectHideFlags: 0
@@ -40,7 +53,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9183719461193467073}
   - component: {fileID: 8074072055012640346}
-  - component: {fileID: 3912618853067384955}
   - component: {fileID: 3072104123417643090}
   m_Layer: 0
   m_Name: ConveyorBelt-Long
@@ -58,7 +70,7 @@ Transform:
   m_GameObject: {fileID: 8082281698326401317}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -2, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_Children:
   - {fileID: 6598623947634803528}
   - {fileID: 7849783131167029869}
@@ -77,21 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 08ff4472fffede941b2fef07aea2d2dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  endPoint: {fileID: 0}
-  speed: 0
---- !u!65 &3912618853067384955
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8082281698326401317}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 0.7124667, z: 0.72163993}
-  m_Center: {x: 0, y: 0.35629606, z: -0.012212902}
+  endPoint: {fileID: 6598623947634803528}
+  speed: 0.3
 --- !u!65 &3072104123417643090
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -100,11 +99,11 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8082281698326401317}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.98797965, y: 0.2615037, z: 0.72163993}
-  m_Center: {x: 0.0060101748, y: 0.7860689, z: -0.012212902}
+  m_Center: {x: 0, y: 0.74, z: -0.012212902}
 --- !u!1001 &2993412591801979255
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -120,7 +119,7 @@ PrefabInstance:
     - target: {fileID: -4216859302048453862, guid: 637071cc90b24c34ab4238202d2dbdba,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.463
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: 637071cc90b24c34ab4238202d2dbdba,
         type: 3}
@@ -184,6 +183,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 637071cc90b24c34ab4238202d2dbdba, type: 3}
+--- !u!1 &6533405784632887422 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 637071cc90b24c34ab4238202d2dbdba,
+    type: 3}
+  m_PrefabInstance: {fileID: 2993412591801979255}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7849783131167029869 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: 637071cc90b24c34ab4238202d2dbdba,

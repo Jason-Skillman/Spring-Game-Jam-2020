@@ -26,7 +26,7 @@ public class Transport : MonoBehaviour, ITransportable {
     }
 
     public void OnRejected() {
-        print("Cant pick this up");
+        //print("Cant pick this up");
     }
 
 }
