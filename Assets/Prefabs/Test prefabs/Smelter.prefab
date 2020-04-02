@@ -161,7 +161,6 @@ GameObject:
   - component: {fileID: 1341525312168762475}
   - component: {fileID: 219798311848778716}
   - component: {fileID: 718253550578338397}
-  - component: {fileID: 1729755498755825489}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -230,19 +229,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &1729755498755825489
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 597928888978345007}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1065737122099919304
 GameObject:
   m_ObjectHideFlags: 0
@@ -1322,6 +1308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2498592502627358541}
+  - component: {fileID: 7338531818700073136}
   - component: {fileID: 1463654942226875471}
   m_Layer: 0
   m_Name: Smelter
@@ -1351,6 +1338,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7338531818700073136
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7682729373591081908}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 0.5, z: 0.5}
+  m_Center: {x: 0, y: 0.25, z: 0}
 --- !u!114 &1463654942226875471
 MonoBehaviour:
   m_ObjectHideFlags: 0
