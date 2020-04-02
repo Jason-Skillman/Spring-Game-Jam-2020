@@ -42,8 +42,10 @@ public class SmelterHUD : MonoBehaviour {
 
         smelter.OnInteractEvent += Smelter_OnInteractEvent;
         smelter.OnTogglePower += Smelter_OnTogglePower;
-        smelter.OnItemSlotFuel += Smelter_OnItemSlotFuel;
-        smelter.OnInput += Smelter_OnInput;
+
+        smelter.OnItemSlotFuel += CalculateItemSlots;
+        smelter.OnInput += CalculateItemSlots;
+        smelter.OnProductCreated += CalculateItemSlots;
     }
 
     private void Smelter_OnInteractEvent() {
@@ -74,12 +76,9 @@ public class SmelterHUD : MonoBehaviour {
         }
     }
 
-    private void Smelter_OnItemSlotFuel() {
-        itemSlotFuel.Calculate(smelter.fuel);
-    }
-
-    private void Smelter_OnInput() {
-        itemSlotInput.Calculate(smelter.input);
+    private void CalculateItemSlots() {
+        itemSlotFuel.Calculate(smelter.Fuel);
+        itemSlotInput.Calculate(smelter.Input);
     }
 
     /// <summary>

@@ -1,17 +1,39 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
 
 public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
 
-    public InputTrigger inputTrigger;
+    [Header("Input")]
+    [Tooltip("The required product")]
+    public Resource productInput;
+    [Tooltip("The amount required from the input")]
+    public int inputAmount = 1;
 
-    [Header("Debug")]
-    public Resource fuel, input;
+    [Header("Output")]
+    [Tooltip("The product to produce")]
+    public Resource productOutput;
+    [Tooltip("The amount to produce")]
+    public int outputAmount = 1;
+
+    
+
+    [Header("Inner Gears")]
+    public InputTrigger inputTrigger;
+    public GameObject outputPosition;
+    public GameObject prefabTransport;
+
+    private Coroutine coroutineTimerOutput;
+
+    public Resource Fuel {
+        get; set;
+    }
+    public Resource Input {
+        get; set;
+    }
 
     private bool isOn;
-
-
     public bool IsOn {
         get {
             return isOn;
@@ -23,18 +45,16 @@ public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
     }
 
     public delegate void Event();
-    public event Event OnInteractEvent, OnItemSlotFuel, OnItemSlotInput, OnInput;
+    public event Event OnInteractEvent, OnItemSlotFuel, OnItemSlotInput, OnInput, OnProductCreated;
 
     public delegate void ToggleEvent(bool value);
     public event ToggleEvent OnTogglePower;
     
 
-    void Start() {
+    private void Start() {
         inputTrigger.MachineInput = this;
-    }
 
-    void Update() {
-        
+        coroutineTimerOutput = StartCoroutine(OutputTimerAsync());
     }
 
     public void OnInteract() {
@@ -44,9 +64,9 @@ public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
     public void OnMachineInput(ITransportable transportable) {
         Resource resource = transportable.OnPeek();
 
-        if(input == null) {
-            input = Instantiate(resource);
-            input.amount = 0;
+        if(Input == null) {
+            Input = Instantiate(resource);
+            Input.amount = 0;
         }
 
         //Is this resource not wood?
@@ -55,7 +75,7 @@ public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
             return;
         }
         //Is the input amount full
-        if(input.IsFull) {
+        if(Input.IsFull) {
             transportable.OnRejected();
             return;
         }
@@ -63,7 +83,7 @@ public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
         //Callback for picking up the transport
         transportable.OnPickup();
 
-        input.Add(ref resource);
+        Input.Add(ref resource);
 
         OnInput();
     }
@@ -97,14 +117,40 @@ public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
 
     public void AddCoal(Resource coal) {
         //If fuel is empty
-        if(fuel == null) {
-            fuel = Instantiate(coal);
+        if(Fuel == null) {
+            Fuel = Instantiate(coal);
         } else {
-            fuel.amount += coal.amount;
-            if(fuel.amount > fuel.maxAmount) fuel.amount = fuel.maxAmount;
+            Fuel.amount += coal.amount;
+            if(Fuel.amount > Fuel.maxAmount) Fuel.amount = Fuel.maxAmount;
         }
 
         OnItemSlotFuel();
+    }
+
+    public IEnumerator OutputTimerAsync() {
+        while(true) {
+            yield return new WaitForSeconds(1);
+
+            if(Input == null) continue;
+            if(Input.IsEmpty) continue;
+            //Is their not enough in the input to create a product?
+            if(Input.amount < inputAmount) continue;
+
+            //Create the output transport
+            GameObject outputGameObject = Instantiate(prefabTransport);
+            outputGameObject.transform.position = outputPosition.transform.position;
+
+            //Create the transport's resource
+            Resource outputResource = Instantiate(productOutput);
+            outputResource.amount = outputAmount;
+            Input.amount -= inputAmount;
+
+            //Load the resource onto the transport
+            Transport transport = outputGameObject.GetComponent<Transport>();
+            transport.Resource = outputResource;
+
+            OnProductCreated();
+        }
     }
 
 }
