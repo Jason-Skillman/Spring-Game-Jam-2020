@@ -150,6 +150,7 @@ MonoBehaviour:
   imagePower: {fileID: 1039890261163881926}
   itemSlotFuel: {fileID: 4510107889938822581}
   itemSlotInput: {fileID: 3457493714336714253}
+  textFuel: {fileID: 1701608482409740343}
 --- !u!1 &597928888978345007
 GameObject:
   m_ObjectHideFlags: 0
@@ -979,7 +980,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1503616705216948461
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1048,7 +1049,7 @@ GameObject:
   - component: {fileID: 9075601596362404473}
   - component: {fileID: 1701608482409740343}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: Fuel Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1349,6 +1350,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3628479e7517ece4d9c0277b2274a74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  productInput: {fileID: 0}
+  inputAmount: 1
+  productOutput: {fileID: 0}
+  outputAmount: 1
+  fuelMax: 60
   inputTrigger: {fileID: 5940488139247733128}
   outputPosition: {fileID: 3116525048229188392}
   prefabTransport: {fileID: 7262290299794828639, guid: b2cde917b7c03d0429f01b3402e0b8fd,
