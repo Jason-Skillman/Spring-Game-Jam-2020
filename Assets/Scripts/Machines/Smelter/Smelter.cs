@@ -1,40 +1,78 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Timers;
 using UnityEngine;
 
 public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
 
-    public InputTrigger inputTrigger;
+    [Header("Input")]
+    [Tooltip("The required product")]
+    public Resource productInput;
+    [Tooltip("The amount required from the input")]
+    public int inputAmount = 1;
 
-    [Header("Debug")]
-    public Resource fuel, input;
+    [Header("Output")]
+    [Tooltip("The product to produce")]
+    public Resource productOutput;
+    [Tooltip("The amount to produce")]
+    public int outputAmount = 1;
+
+    [Header("Fuel")]
+    [Tooltip("The time in seconds of one peice of fuel")]
+    public int fuelMax = 60;
+
+    public int Fuel {
+        get; private set;
+    }
+    
+
+    [Header("Inner Gears")]
+    public InputTrigger inputTrigger;
+    public GameObject outputPosition;
+    public GameObject prefabTransport;
+
+    private Coroutine coroutineTimerOutput, coroutineFuelBurn;
+
+
+    public Resource ResourceFuel {
+        get; set;
+    }
+    public Resource ResourceInput {
+        get; set;
+    }
 
     private bool isOn;
-
-
     public bool IsOn {
         get {
             return isOn;
         }
         set {
             isOn = value;
-            OnTogglePower(isOn);
+
+            if(isOn) coroutineTimerOutput = StartCoroutine(OutputTimerAsync());
+            else StopCoroutine(coroutineTimerOutput);
+
+            if(isOn) coroutineFuelBurn = StartCoroutine(FuelBurnTimerAsync());
+            else StopCoroutine(coroutineFuelBurn);
+
+            OnPowerToggled(isOn);
         }
     }
 
     public delegate void Event();
-    public event Event OnInteractEvent, OnItemSlotFuel, OnItemSlotInput, OnInput;
+    public event Event OnInteractEvent, OnItemSlotFuel, OnItemSlotInput, OnInput, OnProductCreated, OnFuelTick;
 
     public delegate void ToggleEvent(bool value);
-    public event ToggleEvent OnTogglePower;
-    
+    public event ToggleEvent OnPowerToggled;
 
-    void Start() {
-        inputTrigger.MachineInput = this;
+
+    private void Awake() {
+        //Debug
+        //Fuel = 6;
     }
 
-    void Update() {
-        
+    private void Start() {
+        inputTrigger.MachineInput = this;
     }
 
     public void OnInteract() {
@@ -44,9 +82,9 @@ public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
     public void OnMachineInput(ITransportable transportable) {
         Resource resource = transportable.OnPeek();
 
-        if(input == null) {
-            input = Instantiate(resource);
-            input.amount = 0;
+        if(ResourceInput == null) {
+            ResourceInput = Instantiate(resource);
+            ResourceInput.amount = 0;
         }
 
         //Is this resource not wood?
@@ -55,7 +93,7 @@ public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
             return;
         }
         //Is the input amount full
-        if(input.IsFull) {
+        if(ResourceInput.IsFull) {
             transportable.OnRejected();
             return;
         }
@@ -63,13 +101,9 @@ public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
         //Callback for picking up the transport
         transportable.OnPickup();
 
-        input.Add(ref resource);
+        ResourceInput.Add(ref resource);
 
         OnInput();
-    }
-
-    public void TogglePower() {
-        IsOn = !IsOn;
     }
 
     /// <summary>
@@ -95,16 +129,65 @@ public class Smelter : MonoBehaviour, IInteractable, IMachineInput {
         
     }
 
+    public void TogglePower() {
+        IsOn = !IsOn;
+    }
+
     public void AddCoal(Resource coal) {
         //If fuel is empty
-        if(fuel == null) {
-            fuel = Instantiate(coal);
+        if(ResourceFuel == null) {
+            ResourceFuel = Instantiate(coal);
         } else {
-            fuel.amount += coal.amount;
-            if(fuel.amount > fuel.maxAmount) fuel.amount = fuel.maxAmount;
+            ResourceFuel.amount += coal.amount;
+            if(ResourceFuel.amount > ResourceFuel.maxAmount) ResourceFuel.amount = ResourceFuel.maxAmount;
         }
 
         OnItemSlotFuel();
+    }
+
+    public IEnumerator FuelBurnTimerAsync() {
+        while(true) {
+            yield return new WaitForSeconds(1);
+            OnFuelTick();
+
+            if(Fuel <= 0) {
+                if(ResourceFuel.amount <= 0) continue;
+
+                //Use the next block of fuel
+                ResourceFuel.amount--;
+                Fuel = fuelMax;
+                //Fuel = 6;
+                continue;
+            }
+
+            Fuel -= 1;
+        }
+    }
+
+    public IEnumerator OutputTimerAsync() {
+        while(true) {
+            yield return new WaitForSeconds(1);
+            
+            if(ResourceInput == null) continue;
+            if(ResourceInput.IsEmpty) continue;
+            //Is their not enough in the input to create a product?
+            if(ResourceInput.amount < inputAmount) continue;
+
+            //Create the output transport
+            GameObject outputGameObject = Instantiate(prefabTransport);
+            outputGameObject.transform.position = outputPosition.transform.position;
+
+            //Create the transport's resource
+            Resource outputResource = Instantiate(productOutput);
+            outputResource.amount = outputAmount;
+            ResourceInput.amount -= inputAmount;
+
+            //Load the resource onto the transport
+            Transport transport = outputGameObject.GetComponent<Transport>();
+            transport.Resource = outputResource;
+
+            OnProductCreated();
+        }
     }
 
 }

@@ -150,6 +150,7 @@ MonoBehaviour:
   imagePower: {fileID: 1039890261163881926}
   itemSlotFuel: {fileID: 4510107889938822581}
   itemSlotInput: {fileID: 3457493714336714253}
+  textFuel: {fileID: 1701608482409740343}
 --- !u!1 &597928888978345007
 GameObject:
   m_ObjectHideFlags: 0
@@ -325,7 +326,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7915532446062262497
 Transform:
   m_ObjectHideFlags: 0
@@ -682,7 +683,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1813589070642944325}
-  - component: {fileID: 1091994234706710439}
   m_Layer: 0
   m_Name: Output
   m_TagString: Untagged
@@ -704,19 +704,6 @@ Transform:
   m_Father: {fileID: 2498592502627358541}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &1091994234706710439
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3116525048229188392}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Size: {x: 0.25, y: 0.2, z: 0.5}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3741599560632947935
 GameObject:
   m_ObjectHideFlags: 0
@@ -993,7 +980,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1503616705216948461
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1062,7 +1049,7 @@ GameObject:
   - component: {fileID: 9075601596362404473}
   - component: {fileID: 1701608482409740343}
   m_Layer: 0
-  m_Name: Text (TMP)
+  m_Name: Fuel Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1363,9 +1350,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3628479e7517ece4d9c0277b2274a74f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  productInput: {fileID: 11400000, guid: 23af9a4fe0d2379408da17762a2e4081, type: 2}
+  inputAmount: 2
+  productOutput: {fileID: 11400000, guid: ee74067e2d3f4534bbe85a7ffc734b99, type: 2}
+  outputAmount: 1
+  fuelMax: 60
   inputTrigger: {fileID: 5940488139247733128}
-  fuel: {fileID: 0}
-  input: {fileID: 0}
+  outputPosition: {fileID: 3116525048229188392}
+  prefabTransport: {fileID: 7262290299794828639, guid: b2cde917b7c03d0429f01b3402e0b8fd,
+    type: 3}
 --- !u!1 &8754119272869870365
 GameObject:
   m_ObjectHideFlags: 0

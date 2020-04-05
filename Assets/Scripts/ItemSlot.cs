@@ -16,16 +16,18 @@ public class ItemSlot : MonoBehaviour {
     }
 
     public void Calculate(Resource resource) {
-        if(resource == null) {
+        //Is the resource empty?
+        if(resource == null || resource.amount <= 0) {
             resourceSprite.enabled = false;
             amountText.enabled = false;
-        } else {
-            resourceSprite.enabled = true;
-            amountText.enabled = true;
-
-            resourceSprite.sprite = resource.sprite;
-            amountText.text = resource.amount.ToString();
+            return;
         }
+
+        resourceSprite.enabled = true;
+        amountText.enabled = true;
+
+        resourceSprite.sprite = resource.sprite;
+        amountText.text = resource.amount.ToString();
     }
 
 }

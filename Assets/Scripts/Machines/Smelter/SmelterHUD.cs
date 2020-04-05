@@ -1,6 +1,7 @@
 ﻿using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class SmelterHUD : MonoBehaviour {
 
     public Image imagePower;
     public ItemSlot itemSlotFuel, itemSlotInput;
+    public TextMeshProUGUI textFuel;
 
     private Canvas canvas;
     private Animator animator;
@@ -39,11 +41,17 @@ public class SmelterHUD : MonoBehaviour {
 
         //Set power button
         Smelter_OnTogglePower(false);
+        CalculateFuelPercent();
 
         smelter.OnInteractEvent += Smelter_OnInteractEvent;
-        smelter.OnTogglePower += Smelter_OnTogglePower;
-        smelter.OnItemSlotFuel += Smelter_OnItemSlotFuel;
-        smelter.OnInput += Smelter_OnInput;
+        smelter.OnPowerToggled += Smelter_OnTogglePower;
+
+        smelter.OnFuelTick += CalculateFuelPercent;
+        smelter.OnFuelTick += CalculateItemSlots;
+
+        smelter.OnItemSlotFuel += CalculateItemSlots;
+        smelter.OnInput += CalculateItemSlots;
+        smelter.OnProductCreated += CalculateItemSlots;
     }
 
     private void Smelter_OnInteractEvent() {
@@ -74,12 +82,16 @@ public class SmelterHUD : MonoBehaviour {
         }
     }
 
-    private void Smelter_OnItemSlotFuel() {
-        itemSlotFuel.Calculate(smelter.fuel);
+    private void CalculateFuelPercent() {
+        //int maxFuelAmount = smelter.ResourceFuel.maxAmount;
+
+        float percent = ((float)smelter.Fuel / smelter.fuelMax) * 100;
+        textFuel.text = "Fuel: " + Mathf.Floor(percent) + "%";
     }
 
-    private void Smelter_OnInput() {
-        itemSlotInput.Calculate(smelter.input);
+    private void CalculateItemSlots() {
+        itemSlotFuel.Calculate(smelter.ResourceFuel);
+        itemSlotInput.Calculate(smelter.ResourceInput);
     }
 
     /// <summary>
