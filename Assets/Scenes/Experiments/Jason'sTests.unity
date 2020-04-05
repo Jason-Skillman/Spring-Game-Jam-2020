@@ -208,7 +208,7 @@ GameObject:
   - component: {fileID: 432597567}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: BuildGrid
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1564,6 +1564,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d32efd723f92b8946b6b879d853a45cd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameMode: 1
+  prefab: {fileID: 0}
 --- !u!4 &1863302964
 Transform:
   m_ObjectHideFlags: 0
