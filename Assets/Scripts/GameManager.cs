@@ -6,10 +6,12 @@ using UnityEngine;
 public class GameManager : MonoBehaviour {
 	
 	public GameMode gameMode = GameMode.PlayMode;
-	
+
 	[Header("Edit Mode")]
+	public GameObject grid;
 	public GameObject prefabHoverPos;
 	public GameObject prefabHoverNeg;
+	public GameObject prefabArrow;
 
 	[Header("Debug")]
 	public GameObject selectedBuild;
@@ -18,6 +20,10 @@ public class GameManager : MonoBehaviour {
 	private Ray ray;
 	private Vector3 hoverPoint;
 	private GameObject selectedBuildInstance;
+
+	public bool IsBuildSelected {
+		get { return (selectedBuild != null); }
+	}
 
 	public enum GameMode {
 		PlayMode,
@@ -35,6 +41,8 @@ public class GameManager : MonoBehaviour {
 			prefabHoverPos = Instantiate(prefabHoverPos);
 		if(prefabHoverNeg)
 			prefabHoverNeg = Instantiate(prefabHoverNeg);
+		if(prefabArrow)
+			prefabArrow = Instantiate(prefabArrow);
 		
 		//Todo: remove later
 		if(selectedBuild != null)
@@ -57,6 +65,14 @@ public class GameManager : MonoBehaviour {
 	}
 
 	private void HandleInput() {
+		//Mouse input
+		if(Input.GetMouseButtonDown(0)) {
+			if(IsBuildSelected) {
+				PlaceBuild();
+			}
+		}
+		
+		//Keyboard input
 		if(Input.GetKeyDown(KeyCode.Tab)) {
 			ToggleGameMode();
 		} else if(Input.GetKeyDown(KeyCode.R)) {
@@ -83,6 +99,7 @@ public class GameManager : MonoBehaviour {
 		//Turn off edit mode gameObjects
 		if(prefabHoverPos) prefabHoverPos.SetActive(false);
 		if(prefabHoverNeg) prefabHoverNeg.SetActive(false);
+		if(prefabArrow) prefabArrow.SetActive(false);
 		if(selectedBuildInstance) selectedBuildInstance.SetActive(false);
 	}
 
@@ -111,12 +128,14 @@ public class GameManager : MonoBehaviour {
 		}
 				
 		//Show the edit mode game objects
-		if(prefabHoverPos) prefabHoverPos.SetActive(true);
-		if(selectedBuildInstance) selectedBuildInstance.SetActive(true);
+		prefabHoverPos.SetActive(true);
+		selectedBuildInstance.SetActive(true);
+		prefabArrow.SetActive(true);
 		
 		//Move the hover objects to the hover point
 		prefabHoverPos.transform.position = hoverPoint;
 		prefabHoverNeg.transform.position = hoverPoint;
+		prefabArrow.transform.position = hoverPoint;
 		selectedBuildInstance.transform.position = hoverPoint;
 	}
 
@@ -126,13 +145,28 @@ public class GameManager : MonoBehaviour {
 		else gameMode = GameMode.PlayMode;
 	}
 
+	/// <summary>
+	/// Rotates the selected build
+	/// </summary>
 	public void RotateBuild() {
 		
-		Vector3 vector = selectedBuildInstance.transform.forward * 90;
+		selectedBuildInstance.transform.Rotate(Vector3.up, 90.0f);
+		
+		prefabArrow.transform.Rotate(Vector3.up, 90.0f);
+		
+		/*Vector3 vector = selectedBuildInstance.transform.forward * 90;
 
 
 		selectedBuildInstance.transform.rotation =
-			Quaternion.RotateTowards(selectedBuildInstance.transform.rotation, Quaternion.Euler(vector), 90.0f);
+			Quaternion.RotateTowards(selectedBuildInstance.transform.rotation, Quaternion.Euler(vector), 90.0f);*/
+	}
+
+	/// <summary>
+	/// Places the build onto the grid
+	/// </summary>
+	public void PlaceBuild() {
+		//Create a copy of the hover clone
+		GameObject createdBuild = Instantiate(selectedBuildInstance, grid.transform);
 	}
 
 	private void OnDrawGizmos() {
