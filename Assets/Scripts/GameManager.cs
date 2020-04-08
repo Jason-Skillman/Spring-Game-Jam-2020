@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 	
+	public Camera cameraMain;
 	public GameMode gameMode = GameMode.PlayMode;
 
 	[Header("Edit Mode")]
@@ -16,14 +17,17 @@ public class GameManager : MonoBehaviour {
 	[Header("Debug")]
 	public GameObject selectedBuild;
 
-	private Camera cameraMain;
 	private Ray ray;
 	private Vector3 hoverPoint;
 	private GameObject selectedBuildInstance;
 
+	private Dictionary<Vector2, GameObject> gridObjects;
+
 	public bool IsBuildSelected {
 		get { return (selectedBuild != null); }
 	}
+
+	public Vector2 EditHoverVector { get; private set; }
 
 	public enum GameMode {
 		PlayMode,
@@ -33,7 +37,7 @@ public class GameManager : MonoBehaviour {
 
 	private void Awake() {
 		DontDestroyOnLoad(gameObject);
-		cameraMain = Camera.main;
+		gridObjects = new Dictionary<Vector2, GameObject>();
 	}
 
 	private void Start() {
@@ -115,22 +119,31 @@ public class GameManager : MonoBehaviour {
 			if(!hit.transform.gameObject.CompareTag("BuildGrid")) continue;
 					
 			hoverPoint = hit.point;
-			//hitPoint.y = 0.25f;
 
-			//Convert the hit point to grid position. Then convert back to world position
-			int multiplierZ = Mathf.RoundToInt(hoverPoint.z / 0.5f);
-			hoverPoint.z = multiplierZ * 0.5f;
-					
-			int multiplierX = Mathf.RoundToInt(hoverPoint.x / 0.5f);
-			hoverPoint.x = multiplierX * 0.5f;
-
+			//Convert the hit point to grid position, then convert back to world position for each axis
+			int gridX = Mathf.RoundToInt(hoverPoint.x / 0.5f);
+			hoverPoint.x = gridX * 0.5f;
+			int gridY = Mathf.RoundToInt(hoverPoint.z / 0.5f);
+			hoverPoint.z = gridY * 0.5f;
+			
+			//Store the hovered vector
+			EditHoverVector = new Vector2(gridX, gridY);
+			
 			break;
 		}
 				
 		//Show the edit mode game objects
-		prefabHoverPos.SetActive(true);
 		selectedBuildInstance.SetActive(true);
 		prefabArrow.SetActive(true);
+		
+		//If the tile already has an object on it
+		if(gridObjects.ContainsKey(EditHoverVector)) {
+			prefabHoverPos.SetActive(false);
+			prefabHoverNeg.SetActive(true);
+		} else {
+			prefabHoverPos.SetActive(true);
+			prefabHoverNeg.SetActive(false);
+		}
 		
 		//Move the hover objects to the hover point
 		prefabHoverPos.transform.position = hoverPoint;
@@ -149,16 +162,8 @@ public class GameManager : MonoBehaviour {
 	/// Rotates the selected build
 	/// </summary>
 	public void RotateBuild() {
-		
 		selectedBuildInstance.transform.Rotate(Vector3.up, 90.0f);
-		
 		prefabArrow.transform.Rotate(Vector3.up, 90.0f);
-		
-		/*Vector3 vector = selectedBuildInstance.transform.forward * 90;
-
-
-		selectedBuildInstance.transform.rotation =
-			Quaternion.RotateTowards(selectedBuildInstance.transform.rotation, Quaternion.Euler(vector), 90.0f);*/
 	}
 
 	/// <summary>
@@ -167,6 +172,13 @@ public class GameManager : MonoBehaviour {
 	public void PlaceBuild() {
 		//Create a copy of the hover clone
 		GameObject createdBuild = Instantiate(selectedBuildInstance, grid.transform);
+
+		if(gridObjects.ContainsKey(EditHoverVector)) {
+			print("There is already a placed object here");
+			return;
+		}
+		
+		gridObjects.Add(EditHoverVector, createdBuild);
 	}
 
 	private void OnDrawGizmos() {
