@@ -1,15 +1,22 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour {
 	
-	public Camera cameraMain;
 	public GameMode gameMode = GameMode.PlayMode;
+	
+	[Header("Camera")]
+	public Camera cameraMain;
+	public CinemachineVirtualCamera cmCamera;
+	public int screenEdgeBoundary = 50;
+	public float cameraSpeed = 0.01f;
 
 	[Header("Edit Mode")]
 	public GameObject grid;
+
 	public GameObject prefabHoverPos;
 	public GameObject prefabHoverNeg;
 	public GameObject prefabArrow;
@@ -47,17 +54,15 @@ public class GameManager : MonoBehaviour {
 			prefabHoverNeg = Instantiate(prefabHoverNeg);
 		if(prefabArrow)
 			prefabArrow = Instantiate(prefabArrow);
-		
+
 		//Todo: remove later
 		if(selectedBuild != null)
 			selectedBuildInstance = Instantiate(selectedBuild);
-		
-		
 	}
 
 	private void Update() {
 		HandleInput();
-		
+
 		switch(gameMode) {
 			case GameMode.PlayMode:
 				OnPlayMode();
@@ -75,12 +80,28 @@ public class GameManager : MonoBehaviour {
 				PlaceBuild();
 			}
 		}
-		
+
 		//Keyboard input
 		if(Input.GetKeyDown(KeyCode.Tab)) {
 			ToggleGameMode();
 		} else if(Input.GetKeyDown(KeyCode.R)) {
 			RotateBuild();
+		}
+
+		//Edge of screen
+		if(Input.mousePosition.y > Screen.height - screenEdgeBoundary) {
+			//Top
+			cmCamera.transform.localPosition = cmCamera.transform.localPosition + (Vector3.back * cameraSpeed) + (Vector3.left * cameraSpeed);
+		} else if(Input.mousePosition.y < 0 + screenEdgeBoundary) {
+			//Bottom
+			cmCamera.transform.localPosition = cmCamera.transform.localPosition + (Vector3.forward * cameraSpeed) + (Vector3.right * cameraSpeed);
+		}
+		if(Input.mousePosition.x > Screen.width - screenEdgeBoundary) {
+			//Right
+			cmCamera.transform.localPosition = cmCamera.transform.localPosition + (Vector3.forward * cameraSpeed) + (Vector3.left * cameraSpeed);
+		} else if(Input.mousePosition.x < 0 + screenEdgeBoundary) {
+			//Left
+			cmCamera.transform.localPosition = cmCamera.transform.localPosition + (Vector3.back * cameraSpeed) + (Vector3.right * cameraSpeed);
 		}
 	}
 
@@ -88,7 +109,7 @@ public class GameManager : MonoBehaviour {
 		if(Input.GetMouseButtonDown(0)) {
 			ray = cameraMain.ScreenPointToRay(Input.mousePosition);
 			RaycastHit hit;
-					
+
 			if(Physics.Raycast(ray, out hit, Mathf.Infinity)) {
 				IInteractable interactable = hit.transform.gameObject.GetComponent<IInteractable>();
 
@@ -99,7 +120,7 @@ public class GameManager : MonoBehaviour {
 				interactable.OnInteract();
 			}
 		}
-		
+
 		//Turn off edit mode gameObjects
 		if(prefabHoverPos) prefabHoverPos.SetActive(false);
 		if(prefabHoverNeg) prefabHoverNeg.SetActive(false);
@@ -110,14 +131,14 @@ public class GameManager : MonoBehaviour {
 	private void OnEditMode() {
 		ray = cameraMain.ScreenPointToRay(Input.mousePosition);
 		RaycastHit[] hits = Physics.RaycastAll(ray);
-				
+
 		//Interate through all of the hit points until the grid is found
 		for(int i = 0; i < hits.Length; i++) {
 			RaycastHit hit = hits[i];
-					
+
 			//If this object not the building grid try again.
 			if(!hit.transform.gameObject.CompareTag("BuildGrid")) continue;
-					
+
 			hoverPoint = hit.point;
 
 			//Convert the hit point to grid position, then convert back to world position for each axis
@@ -125,17 +146,17 @@ public class GameManager : MonoBehaviour {
 			hoverPoint.x = gridX * 0.5f;
 			int gridY = Mathf.RoundToInt(hoverPoint.z / 0.5f);
 			hoverPoint.z = gridY * 0.5f;
-			
+
 			//Store the hovered vector
 			EditHoverVector = new Vector2(gridX, gridY);
-			
+
 			break;
 		}
-				
+
 		//Show the edit mode game objects
 		selectedBuildInstance.SetActive(true);
 		prefabArrow.SetActive(true);
-		
+
 		//If the tile already has an object on it
 		if(gridObjects.ContainsKey(EditHoverVector)) {
 			prefabHoverPos.SetActive(false);
@@ -144,7 +165,7 @@ public class GameManager : MonoBehaviour {
 			prefabHoverPos.SetActive(true);
 			prefabHoverNeg.SetActive(false);
 		}
-		
+
 		//Move the hover objects to the hover point
 		prefabHoverPos.transform.position = hoverPoint;
 		prefabHoverNeg.transform.position = hoverPoint;
@@ -177,7 +198,7 @@ public class GameManager : MonoBehaviour {
 			print("There is already a placed object here");
 			return;
 		}
-		
+
 		gridObjects.Add(EditHoverVector, createdBuild);
 	}
 
