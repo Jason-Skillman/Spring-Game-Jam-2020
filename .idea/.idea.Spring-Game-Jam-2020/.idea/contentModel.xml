@@ -27,6 +27,9 @@
           </e>
           <e p="GameManager.cs" t="Include" />
           <e p="Gather.cs" t="Include" />
+          <e p="HUD" t="Include">
+            <e p="BuildSelectButton.cs" t="Include" />
+          </e>
           <e p="IInteractable.cs" t="Include" />
           <e p="ItemSlot.cs" t="Include" />
           <e p="Machines" t="Include">
