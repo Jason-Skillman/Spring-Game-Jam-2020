@@ -27,11 +27,9 @@ public class GameManager : MonoBehaviour {
 	public GameObject prefabHoverNeg;
 	public GameObject prefabArrow;
 
-	[Header("Debug")]
-	public GameObject selectedBuild;
-
 	private Ray ray;
-	private Vector3 hoverPoint;
+	private Vector3 hoverVector;
+	private GameObject selectedBuild;
 	private GameObject selectedBuildInstance;
 
 	private Dictionary<Vector2, GameObject> gridObjects;
@@ -40,7 +38,10 @@ public class GameManager : MonoBehaviour {
 		get { return (selectedBuild != null); }
 	}
 
-	public Vector2 EditHoverVector { get; private set; }
+	/// <summary>
+	/// The current grid vector that the player is hovering over
+	/// </summary>
+	public Vector2 HoverGridVector { get; private set; }
 
 	public enum GameMode {
 		PlayMode,
@@ -90,8 +91,10 @@ public class GameManager : MonoBehaviour {
 			if(Input.mousePosition.y > 0 + 200) {
 				//Mouse input
 				if(Input.GetMouseButtonDown(0)) {
-					if(IsBuildSelected) {
-						PlaceBuild();
+					if(IsBuildSelected)
+						AddBuilding();
+					else {
+						RemoveBuilding(HoverGridVector);
 					}
 				}
 			}
@@ -155,7 +158,6 @@ public class GameManager : MonoBehaviour {
 		ray = cameraMain.ScreenPointToRay(Input.mousePosition);
 		RaycastHit[] hits = Physics.RaycastAll(ray);
 
-		
 		//Interate through all of the hit points until the grid is found
 		for(int i = 0; i < hits.Length; i++) {
 			RaycastHit hit = hits[i];
@@ -163,16 +165,16 @@ public class GameManager : MonoBehaviour {
 			//If this object not the building grid try again.
 			if(!hit.transform.gameObject.CompareTag("BuildGrid")) continue;
 
-			hoverPoint = hit.point;
+			hoverVector = hit.point;
 
 			//Convert the hit point to grid position, then convert back to world position for each axis
-			int gridX = Mathf.RoundToInt(hoverPoint.x / 0.5f);
-			hoverPoint.x = gridX * 0.5f;
-			int gridY = Mathf.RoundToInt(hoverPoint.z / 0.5f);
-			hoverPoint.z = gridY * 0.5f;
+			int gridX = Mathf.RoundToInt(hoverVector.x / 0.5f);
+			hoverVector.x = gridX * 0.5f;
+			int gridY = Mathf.RoundToInt(hoverVector.z / 0.5f);
+			hoverVector.z = gridY * 0.5f;
 
 			//Store the hovered vector
-			EditHoverVector = new Vector2(gridX, gridY);
+			HoverGridVector = new Vector2(gridX, gridY);
 
 			break;
 		}
@@ -182,20 +184,36 @@ public class GameManager : MonoBehaviour {
 		if(selectedBuildInstance) selectedBuildInstance.SetActive(true);
 		prefabArrow.SetActive(true);
 
-		//If the tile already has an object on it
-		if(gridObjects.ContainsKey(EditHoverVector)) {
-			prefabHoverPos.SetActive(false);
-			prefabHoverNeg.SetActive(true);
+		//Show to correct hover feedback
+		if(IsBuildSelected) {
+			//If the tile already has an object on it
+			if(gridObjects.ContainsKey(HoverGridVector)) {
+				//Negative
+				prefabHoverPos.SetActive(false);
+				prefabHoverNeg.SetActive(true);
+			} else {
+				//Positive
+				prefabHoverPos.SetActive(true);
+				prefabHoverNeg.SetActive(false);
+			}
 		} else {
-			prefabHoverPos.SetActive(true);
-			prefabHoverNeg.SetActive(false);
+			//If the tile does not have an object on it
+			if(!gridObjects.ContainsKey(HoverGridVector)) {
+				//Negative
+				prefabHoverPos.SetActive(false);
+				prefabHoverNeg.SetActive(true);
+			} else {
+				//Positive
+				prefabHoverPos.SetActive(true);
+				prefabHoverNeg.SetActive(false);
+			}
 		}
 
 		//Move the hover objects to the hover point
-		prefabHoverPos.transform.position = hoverPoint;
-		prefabHoverNeg.transform.position = hoverPoint;
-		prefabArrow.transform.position = hoverPoint;
-		if(selectedBuildInstance) selectedBuildInstance.transform.position = hoverPoint;
+		prefabHoverPos.transform.position = hoverVector;
+		prefabHoverNeg.transform.position = hoverVector;
+		prefabArrow.transform.position = hoverVector;
+		if(selectedBuildInstance) selectedBuildInstance.transform.position = hoverVector;
 	}
 
 	[ContextMenu("Toggle Game Mode")]
@@ -206,7 +224,7 @@ public class GameManager : MonoBehaviour {
 
 	/// <summary>
 	/// Changes the current selected object to build.
-	/// <para>Set null for no selection</para>
+	/// <para>Set null for remove selection</para>
 	/// </summary>
 	/// <param name="prefabBuild"></param>
 	public void ChangeSelectedBuild(GameObject prefabBuild) {
@@ -222,7 +240,7 @@ public class GameManager : MonoBehaviour {
 		
 		selectedBuild = prefabBuild;
 		selectedBuildInstance = Instantiate(selectedBuild);
-		selectedBuildInstance.transform.position = hoverPoint;
+		selectedBuildInstance.transform.position = hoverVector;
 	}
 
 	/// <summary>
@@ -236,26 +254,44 @@ public class GameManager : MonoBehaviour {
 	/// <summary>
 	/// Places the build onto the grid
 	/// </summary>
-	public void PlaceBuild() {
+	public void AddBuilding() {
 		//Create a copy of the hover clone
 		GameObject createdBuild = Instantiate(selectedBuildInstance, grid.transform);
 
-		if(gridObjects.ContainsKey(EditHoverVector)) {
+		//Is their already a object here?
+		if(gridObjects.ContainsKey(HoverGridVector)) {
 			print("There is already a placed object here");
 			return;
 		}
 
-		gridObjects.Add(EditHoverVector, createdBuild);
+		//Add the object to the grid
+		gridObjects.Add(HoverGridVector, createdBuild);
+	}
+
+	/// <summary>
+	/// Removes a build in the grid
+	/// </summary>
+	public void RemoveBuilding(Vector2 gridPos) {
+		//Is their no object here?
+		if(!gridObjects.ContainsKey(gridPos)) {
+			print("No building to remove");
+			return;
+		}
+		
+		GameObject objToRemove = gridObjects[gridPos];
+		
+		//Remove the object
+		Destroy(objToRemove);
+		gridObjects.Remove(gridPos);
 	}
 
 	private void OnDrawGizmos() {
 		Gizmos.color = Color.red;
 
 		if(gameMode == GameMode.EditMode) {
-			if(hoverPoint != null) {
+			if(hoverVector != null) {
 				Vector3 offset = new Vector3(0, 0.25f, 0);
-				Gizmos.DrawWireCube(hoverPoint + offset, Vector3.one * 0.5f);
-				//print("draw");
+				Gizmos.DrawWireCube(hoverVector + offset, Vector3.one * 0.5f);
 			}
 		}
 	}

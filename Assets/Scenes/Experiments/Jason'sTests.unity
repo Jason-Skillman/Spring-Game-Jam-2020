@@ -1594,6 +1594,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 82584692680491688, guid: f4192c37c1b6fe945b9a442bce14d7b3,
+        type: 3}
+      propertyPath: title
+      value: Remove
+      objectReference: {fileID: 0}
     - target: {fileID: 1065498232959533455, guid: f4192c37c1b6fe945b9a442bce14d7b3,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -1753,6 +1758,11 @@ PrefabInstance:
         type: 3}
       propertyPath: useCameraEdgeMove
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2602653938123160260, guid: f4192c37c1b6fe945b9a442bce14d7b3,
+        type: 3}
+      propertyPath: selectedBuild
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2602653938123160261, guid: f4192c37c1b6fe945b9a442bce14d7b3,
         type: 3}
@@ -1937,7 +1947,7 @@ PrefabInstance:
     - target: {fileID: 8592545705988876094, guid: f4192c37c1b6fe945b9a442bce14d7b3,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.0012893677
+      value: 0.019302368
       objectReference: {fileID: 0}
     - target: {fileID: 8592545705988876094, guid: f4192c37c1b6fe945b9a442bce14d7b3,
         type: 3}
