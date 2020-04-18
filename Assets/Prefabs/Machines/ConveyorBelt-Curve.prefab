@@ -9,9 +9,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4184777019237043107}
-  - component: {fileID: 2207623265171463748}
   - component: {fileID: 5282951189570885853}
   - component: {fileID: 6082806564391003186}
+  - component: {fileID: 2207623265171463748}
   m_Layer: 0
   m_Name: ConveyorBelt-Curve
   m_TagString: Untagged
@@ -35,20 +35,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2207623265171463748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7046093924208357794}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 08ff4472fffede941b2fef07aea2d2dc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  endPoint: {fileID: 0}
-  speed: 0
 --- !u!65 &5282951189570885853
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -61,7 +47,7 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.42840314, y: 0.3410102, z: 0.42604125}
-  m_Center: {x: -0.042515457, y: 0.1358133, z: 0.04133457}
+  m_Center: {x: 0.05, y: 0.1358133, z: -0.02}
 --- !u!65 &6082806564391003186
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -74,7 +60,21 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 0.42840308, y: 0.16858637, z: 0.42840302}
-  m_Center: {x: -0.042515427, y: 0.39444906, z: 0.040153563}
+  m_Center: {x: 0.05, y: 0.39444906, z: -0.02}
+--- !u!114 &2207623265171463748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7046093924208357794}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08ff4472fffede941b2fef07aea2d2dc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  endPoint: {fileID: 1594953364209556210}
+  speed: 0.3
 --- !u!1 &8936443266516569038
 GameObject:
   m_ObjectHideFlags: 0
